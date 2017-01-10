@@ -35,9 +35,14 @@ public class CanvasView extends View
      * 붓의 색을 바꿔주는 메소드
      * @param color 색깔
      */
-    public void changeColor(int color)
+    public void setColor(int color)
     {
         paint.setColor(color);
+    }
+
+    public int getColor()
+    {
+        return paint.getColor();
     }
 
     @Override

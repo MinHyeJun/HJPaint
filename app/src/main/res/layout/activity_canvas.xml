@@ -9,28 +9,12 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/btn_red"
+            android:id="@+id/btn_change_color"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="빨간색"
-            android:textColor="#FF0000"/>
+            android:text="색상변경"/>
 
-        <Button
-            android:id="@+id/btn_green"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="초록색"
-            android:textColor="#01b001"/>
-
-        <Button
-            android:id="@+id/btn_blue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="파란색"
-            android:textColor="#0000FF"/>
 
     </LinearLayout>
 
