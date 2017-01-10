@@ -13,8 +13,15 @@ import android.view.View;
  */
 public class CanvasView extends View
 {
-    private Paint paint;
+    private Paint paintBrush;
+    private Paint paintEraser;
     private Bitmap bitmap;
+
+    /**
+     * 0 - 지우개 모드
+     * 1 - 브러시 모드
+     */
+    private int toolNumber;
 
     public CanvasView(Context context)
     {
@@ -25,8 +32,11 @@ public class CanvasView extends View
     {
         super(context, attrs);
 
-        paint = new Paint();
-        paint.setStrokeWidth(10.0f);
+        paintBrush = new Paint();
+        paintEraser = new Paint();
+        paintBrush.setStrokeWidth(10.0f);
+        paintEraser.setStrokeWidth(50.0f);
+        paintEraser.setColor(0xFFFFFFFF);
     }
 
     /**
@@ -36,12 +46,17 @@ public class CanvasView extends View
      */
     public void setColor(int color)
     {
-        paint.setColor(color);
+        paintBrush.setColor(color);
     }
 
     public int getColor()
     {
-        return paint.getColor();
+        return paintBrush.getColor();
+    }
+
+    public void setToolNumber(int toolNumber)
+    {
+        this.toolNumber = toolNumber;
     }
 
     @Override
@@ -64,7 +79,12 @@ public class CanvasView extends View
         Canvas canvas = new Canvas(bitmap);
 
         if (lastX != -1 && lastY != -1)
-            canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paint);
+        {
+            if(toolNumber == 0)
+                canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintEraser);
+            else if(toolNumber == 1)
+                canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintBrush);
+        }
 
         if (event.getAction() == MotionEvent.ACTION_UP)
         {

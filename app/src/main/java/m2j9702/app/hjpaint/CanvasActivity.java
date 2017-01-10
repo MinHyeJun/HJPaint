@@ -18,29 +18,46 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
 
-        Button btnChangeColor = (Button) findViewById(R.id.btn_change_color);
+        Button btnChangeColor =  (Button) findViewById(R.id.btn_change_color);
+        Button btnEraser = (Button) findViewById(R.id.btn_eraser);
+        Button btnBrush = (Button) findViewById(R.id.btn_brush);
         canvasView = (CanvasView) findViewById(R.id.canvasview);
 
         btnChangeColor.setOnClickListener(this);
+        btnEraser.setOnClickListener(this);
+        btnBrush.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v)
     {
-        new AmbilWarnaDialog(this, canvasView.getColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+        if (v.getId() == R.id.btn_change_color)
         {
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog)
+            new AmbilWarnaDialog(this, canvasView.getColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
             {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog)
+                {
 
-            }
+                }
 
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color)
-            {
-                canvasView.setColor(color);
-            }
-        }).show();
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color)
+                {
+                    canvasView.setColor(color);
+                }
+            }).show();
+        }
+        else if(v.getId() == R.id.btn_eraser)
+        {
+            canvasView.setToolNumber(0);
+        }
+        else if(v.getId() == R.id.btn_brush)
+        {
+            canvasView.setToolNumber(1);
+        }
+
+
 
     }
 }
