@@ -1,14 +1,12 @@
 package m2j9702.app.hjpaint;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.ArrayList;
 
 /**
  * 그림을 그릴 수 있는 뷰
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 public class CanvasView extends View
 {
     private Paint paint;
-    private ArrayList<Point> arrayPoint = new ArrayList<>();
+    private Bitmap bitmap;
 
     public CanvasView(Context context)
     {
@@ -33,6 +31,7 @@ public class CanvasView extends View
 
     /**
      * 붓의 색을 바꿔주는 메소드
+     *
      * @param color 색깔
      */
     public void setColor(int color)
@@ -48,15 +47,36 @@ public class CanvasView extends View
     @Override
     protected void onDraw(Canvas canvas)
     {
-        for (int i = 0; i < arrayPoint.size() - 1; i++)
-            canvas.drawLine(arrayPoint.get(i).x, arrayPoint.get(i).y, arrayPoint.get(i+1).x, arrayPoint.get(i+1).y, paint);
+
+        if (bitmap == null)
+        {
+            bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        canvas.drawBitmap(bitmap, 0, 0, null);
     }
+
+    private float lastX = -1, lastY = -1;
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        Point p = new Point((int) event.getX(), (int) event.getY());
-        arrayPoint.add(p);
+        Canvas canvas = new Canvas(bitmap);
+
+        if (lastX != -1 && lastY != -1)
+            canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paint);
+
+        if (event.getAction() == MotionEvent.ACTION_UP)
+        {
+            lastX = -1;
+            lastY = -1;
+        }
+        else
+        {
+            lastX = event.getX();
+            lastY = event.getY();
+        }
+
         invalidate();
         return true;
     }
