@@ -25,7 +25,7 @@ public class CanvasView extends View
      * 0 - 지우개 모드
      * 1 - 브러시 모드
      */
-    private ToolNumber toolNumber;
+    private ToolNumber toolNumber = ToolNumber.Brush;
 
     public CanvasView(Context context)
     {
@@ -61,6 +61,12 @@ public class CanvasView extends View
     public void setToolNumber(ToolNumber toolNumber)
     {
         this.toolNumber = toolNumber;
+    }
+
+    public void eraseBitmap()
+    {
+        bitmap.eraseColor(0);
+        invalidate();
     }
 
     @Override
