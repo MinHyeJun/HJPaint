@@ -2,6 +2,7 @@ package m2j9702.app.hjpaint;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         btnSelect = (RadioButton) findViewById(R.id.btn_select);
         btnClear = (Button) findViewById(R.id.btn_clear);
         canvasView = (CanvasView) findViewById(R.id.canvasview);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         btnEraser.setOnClickListener(this);
         btnBrush.setOnClickListener(this);
