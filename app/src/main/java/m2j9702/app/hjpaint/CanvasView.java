@@ -8,8 +8,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-enum ToolNumber{
-    Eraser, Brush;
+enum ToolType
+{
+    ERASER, BRUSH, SELECT;
 }
 
 /**
@@ -19,13 +20,14 @@ public class CanvasView extends View
 {
     private Paint paintBrush;
     private Paint paintEraser;
+    private Paint paintSelect;
     private Bitmap bitmap;
 
     /**
      * 0 - 지우개 모드
      * 1 - 브러시 모드
      */
-    private ToolNumber toolNumber = ToolNumber.Brush;
+    private ToolType toolType = ToolType.BRUSH;
 
     public CanvasView(Context context)
     {
@@ -38,6 +40,7 @@ public class CanvasView extends View
 
         paintBrush = new Paint();
         paintEraser = new Paint();
+        paintSelect = new Paint();
         paintBrush.setStrokeWidth(10.0f);
         paintBrush.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setStrokeWidth(50.0f);
@@ -66,9 +69,9 @@ public class CanvasView extends View
      */
     public void setLineWidth(int lineWidth)
     {
-        if(toolNumber == ToolNumber.Eraser)
+        if(toolType == ToolType.ERASER)
             paintEraser.setStrokeWidth(lineWidth);
-        else if(toolNumber == ToolNumber.Brush)
+        else if(toolType == ToolType.BRUSH)
             paintBrush.setStrokeWidth(lineWidth);
     }
 
@@ -78,17 +81,17 @@ public class CanvasView extends View
      */
     public int getLineWidth()
     {
-        if(toolNumber == ToolNumber.Eraser)
+        if(toolType == ToolType.ERASER)
             return (int) paintEraser.getStrokeWidth();
-        else if (toolNumber == ToolNumber.Brush)
+        else if (toolType == ToolType.BRUSH)
             return (int) paintBrush.getStrokeWidth();
         else
             return -1;
     }
 
-    public void setToolNumber(ToolNumber toolNumber)
+    public void setToolType(ToolType toolType)
     {
-        this.toolNumber = toolNumber;
+        this.toolType = toolType;
     }
 
     public void eraseBitmap()
@@ -116,23 +119,26 @@ public class CanvasView extends View
     {
         Canvas canvas = new Canvas(bitmap);
 
-        if (lastX != -1 && lastY != -1)
+        if (toolType != ToolType.SELECT)
         {
-            if(toolNumber == ToolNumber.Eraser)
-                canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintEraser);
-            else if(toolNumber == ToolNumber.Brush)
-                canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintBrush);
-        }
+            if (lastX != -1 && lastY != -1)
+            {
+                if(toolType == ToolType.ERASER)
+                    canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintEraser);
+                else if(toolType == ToolType.BRUSH)
+                    canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintBrush);
+            }
 
-        if (event.getAction() == MotionEvent.ACTION_UP)
-        {
-            lastX = -1;
-            lastY = -1;
-        }
-        else
-        {
-            lastX = event.getX();
-            lastY = event.getY();
+            if (event.getAction() == MotionEvent.ACTION_UP)
+            {
+                lastX = -1;
+                lastY = -1;
+            }
+            else
+            {
+                lastX = event.getX();
+                lastY = event.getY();
+            }
         }
 
         invalidate();

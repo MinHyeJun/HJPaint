@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:paddingTop="10dp">
 
 
         <RadioGroup
@@ -34,6 +35,15 @@
                 android:layout_weight="1"
                 android:text="지우개"
                 android:layout_gravity="center"/>
+
+            <RadioButton
+                android:id="@+id/btn_select"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="선택"
+                android:layout_gravity="center"/>
+
 
         </RadioGroup>
 

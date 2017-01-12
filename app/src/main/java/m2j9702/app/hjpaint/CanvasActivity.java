@@ -19,6 +19,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     private RadioButton btnEraser;
     private RadioButton btnBrush;
     private Button btnClear;
+    private RadioButton btnSelect;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -28,11 +29,13 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
 
         btnEraser = (RadioButton) findViewById(R.id.btn_eraser);
         btnBrush = (RadioButton) findViewById(R.id.btn_brush);
+        btnSelect = (RadioButton) findViewById(R.id.btn_select);
         btnClear = (Button) findViewById(R.id.btn_clear);
         canvasView = (CanvasView) findViewById(R.id.canvasview);
 
         btnEraser.setOnClickListener(this);
         btnBrush.setOnClickListener(this);
+        btnSelect.setOnClickListener(this);
         btnClear.setOnClickListener(this);
     }
 
@@ -93,13 +96,17 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     {
         if(v.getId() == R.id.btn_eraser)
         {
-            canvasView.setToolNumber(ToolNumber.Eraser);
+            canvasView.setToolType(ToolType.ERASER);
         }
         else if(v.getId() == R.id.btn_brush)
         {
-            canvasView.setToolNumber(ToolNumber.Brush);
+            canvasView.setToolType(ToolType.BRUSH);
         }
-        else if(v.getId() == R.id.btn_clear)
+        else if (v.getId() == R.id.btn_select)
+        {
+            canvasView.setToolType(ToolType.SELECT);
+        }
+        else if (v.getId() == R.id.btn_clear)
         {
             canvasView.eraseBitmap();
         }
