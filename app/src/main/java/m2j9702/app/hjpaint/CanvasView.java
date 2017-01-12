@@ -50,6 +50,7 @@ public class CanvasView extends View
         paintEraser.setStrokeWidth(50.0f);
         paintEraser.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setColor(0xFFFFFFFF);
+        paintSelect.setStyle(Paint.Style.STROKE);
         paintSelect.setStrokeWidth(3.0f);
         paintSelect.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
     }
@@ -118,7 +119,6 @@ public class CanvasView extends View
     @Override
     protected void onDraw(Canvas canvas)
     {
-
         if (bitmap == null)
         {
             bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
@@ -159,7 +159,23 @@ public class CanvasView extends View
         }
         else
         {
-            selectedPath.lineTo(event.getX(),event.getY());
+            // 사용자가 선택영역을 새로 그리기 시작할 때 path를 리셋한다.
+            if (event.getAction() == MotionEvent.ACTION_DOWN)
+            {
+                lastX = event.getX();
+                lastY = event.getY();
+                selectedPath.reset();
+                selectedPath.moveTo(lastX, lastY);
+            }
+            else
+                selectedPath.lineTo(event.getX(),event.getY());
+
+            // 사용자가 선택영역을 다 그렸을 때 끝점과 시작점을 이어준다.
+            if (event.getAction() == MotionEvent.ACTION_UP)
+            {
+                selectedPath.lineTo(lastX, lastY);
+                lastX = lastY = -1;
+            }
         }
 
         invalidate();
