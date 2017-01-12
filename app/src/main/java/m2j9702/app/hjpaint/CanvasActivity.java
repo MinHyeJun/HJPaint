@@ -51,9 +51,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if(item.getItemId() == R.id.action_change_color)
+        if (item.getItemId() == R.id.action_change_color)
         {
-            new AmbilWarnaDialog(this, canvasView.getColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+            new AmbilWarnaDialog(this, canvasView.getBrushColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
             {
                 @Override
                 public void onCancel(AmbilWarnaDialog dialog)
@@ -64,11 +64,11 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color)
                 {
-                    canvasView.setColor(color);
+                    canvasView.setBrushColor(color);
                 }
             }).show();
         }
-        else if(item.getItemId() == R.id.action_line_width)
+        else if (item.getItemId() == R.id.action_line_width)
         {
             LineWidthSettingDialog dialog = new LineWidthSettingDialog(this, canvasView.getLineWidth(), new LineWidthSettingDialog.LineWidthSettingListener()
             {
@@ -86,7 +86,23 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 }
             });
             dialog.show();
+        }
+        else if (item.getItemId() == R.id.action_change_background)
+        {
+            new AmbilWarnaDialog(this, canvasView.getBitmapBackground(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+            {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog)
+                {
 
+                }
+
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color)
+                {
+                    canvasView.setBitmapColor(color);
+                }
+            }).show();
         }
         return true;
     }
@@ -94,11 +110,11 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v)
     {
-        if(v.getId() == R.id.btn_eraser)
+        if (v.getId() == R.id.btn_eraser)
         {
             canvasView.setToolType(ToolType.ERASER);
         }
-        else if(v.getId() == R.id.btn_brush)
+        else if (v.getId() == R.id.btn_brush)
         {
             canvasView.setToolType(ToolType.BRUSH);
         }
@@ -108,7 +124,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if (v.getId() == R.id.btn_clear)
         {
-            canvasView.eraseBitmap();
+            canvasView.setBitmapColor(canvasView.getBitmapBackground());
         }
     }
 }

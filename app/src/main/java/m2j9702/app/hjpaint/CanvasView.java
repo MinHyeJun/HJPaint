@@ -69,6 +69,11 @@ public class CanvasView extends View
         return paintBrush.getColor();
     }
 
+    public int getBitmapBackground()
+    {
+        return paintEraser.getColor();
+    }
+
     /**
      * 현재 선택된 툴의 선 두께를 설정
      * @param lineWidth 설정할 선 두께
@@ -100,9 +105,13 @@ public class CanvasView extends View
         this.toolType = toolType;
     }
 
-    public void eraseBitmap()
+    public void setBitmapColor(int color)
     {
-        bitmap.eraseColor(0);
+        bitmap.eraseColor(color);
+
+        if(paintEraser.getColor() != color)
+            paintEraser.setColor(color);
+
         invalidate();
     }
 
