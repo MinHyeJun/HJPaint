@@ -58,6 +58,30 @@ public class CanvasView extends View
         return paintBrush.getColor();
     }
 
+    /**
+     * 현재 선택된 툴의 선 두께를 설정
+     * @param lineWidth 설정할 선 두께
+     */
+    public void setLineWidth(int lineWidth)
+    {
+        if(toolNumber == ToolNumber.Eraser)
+            paintEraser.setStrokeWidth(lineWidth);
+        else if(toolNumber == ToolNumber.Brush)
+            paintBrush.setStrokeWidth(lineWidth);
+    }
+
+    /**
+     * 현재 선택된 툴의 선 두깨를 가져오는 메소드
+     * @return 현재 선택된 툴의 선 두께
+     */
+    public int getLineWidth()
+    {
+        if(toolNumber == ToolNumber.Eraser)
+            return (int) paintEraser.getStrokeWidth();
+        else if (toolNumber == ToolNumber.Brush)
+            return (int) paintBrush.getStrokeWidth();
+    }
+
     public void setToolNumber(ToolNumber toolNumber)
     {
         this.toolNumber = toolNumber;

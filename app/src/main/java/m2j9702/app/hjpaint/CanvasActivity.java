@@ -2,6 +2,7 @@ package m2j9702.app.hjpaint;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -66,7 +67,23 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if(item.getItemId() == R.id.action_line_width)
         {
-            new LineWidthSettingDialog(this).show();
+            LineWidthSettingDialog dialog = new LineWidthSettingDialog(this, canvasView.getLineWidth(), new LineWidthSettingDialog.LineWidthSettingListener()
+            {
+                @Override
+                public void onLineDialogOk(int lineWidth)
+                {
+                    canvasView.setLineWidth(lineWidth);
+                    Log.d("ASDF", "OK");
+                }
+
+                @Override
+                public void onLineDialogCancel()
+                {
+                    Log.d("ASDF", "Cancel");
+                }
+            });
+            dialog.show();
+
         }
         return true;
     }
