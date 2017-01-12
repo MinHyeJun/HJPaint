@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +24,7 @@ public class CanvasView extends View
     private Paint paintEraser;
     private Paint paintSelect;
     private Bitmap bitmap;
+    private Path selectedPath;
 
     /**
      * 0 - 지우개 모드
@@ -42,6 +44,7 @@ public class CanvasView extends View
         paintBrush = new Paint();
         paintEraser = new Paint();
         paintSelect = new Paint();
+        selectedPath = new Path();
         paintBrush.setStrokeWidth(10.0f);
         paintBrush.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setStrokeWidth(50.0f);
@@ -56,12 +59,12 @@ public class CanvasView extends View
      *
      * @param color 색깔
      */
-    public void setColor(int color)
+    public void setBrushColor(int color)
     {
         paintBrush.setColor(color);
     }
 
-    public int getColor()
+    public int getBrushColor()
     {
         return paintBrush.getColor();
     }
@@ -113,6 +116,8 @@ public class CanvasView extends View
         }
 
         canvas.drawBitmap(bitmap, 0, 0, null);
+        if(toolType == ToolType.SELECT)
+            canvas.drawPath(selectedPath,paintSelect);
     }
 
     private float lastX = -1, lastY = -1;
@@ -142,6 +147,10 @@ public class CanvasView extends View
                 lastX = event.getX();
                 lastY = event.getY();
             }
+        }
+        else
+        {
+            selectedPath.lineTo(event.getX(),event.getY());
         }
 
         invalidate();
