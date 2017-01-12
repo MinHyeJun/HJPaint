@@ -7,14 +7,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
-        <Button
-            android:id="@+id/btn_change_color"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="색상변경"/>
 
         <RadioGroup
             android:layout_width="0dp"
@@ -26,7 +22,7 @@
             <RadioButton
                 android:id="@id/btn_brush"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="브러시"
                 android:layout_gravity="center"/>
@@ -34,7 +30,7 @@
             <RadioButton
                 android:id="@+id/btn_eraser"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="지우개"
                 android:layout_gravity="center"/>

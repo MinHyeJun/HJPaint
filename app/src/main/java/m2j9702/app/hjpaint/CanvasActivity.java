@@ -2,6 +2,9 @@ package m2j9702.app.hjpaint;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -22,22 +25,29 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
 
-        Button btnChangeColor =   (Button) findViewById(R.id.btn_change_color);
         btnEraser = (RadioButton) findViewById(R.id.btn_eraser);
         btnBrush = (RadioButton) findViewById(R.id.btn_brush);
         btnClear = (Button) findViewById(R.id.btn_clear);
         canvasView = (CanvasView) findViewById(R.id.canvasview);
 
-        btnChangeColor.setOnClickListener(this);
         btnEraser.setOnClickListener(this);
         btnBrush.setOnClickListener(this);
         btnClear.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v)
+    public boolean onCreateOptionsMenu(Menu menu)
     {
-        if (v.getId() == R.id.btn_change_color)
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_canvas, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId() == R.id.action_change_color)
         {
             new AmbilWarnaDialog(this, canvasView.getColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
             {
@@ -54,7 +64,17 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }).show();
         }
-        else if(v.getId() == R.id.btn_eraser)
+        else if(item.getItemId() == R.id.action_line_width)
+        {
+            new LineWidthSettingDialog(this).show();
+        }
+        return true;
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        if(v.getId() == R.id.btn_eraser)
         {
             canvasView.setToolNumber(ToolNumber.Eraser);
         }

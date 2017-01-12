@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_change_color"
+          android:title="색상변경"/>
+    <item android:id="@+id/action_line_width"
+          android:title="선 두께 설정"/>
+</menu>
