@@ -105,9 +105,11 @@ public class CanvasView extends View
     public void setToolType(ToolType toolType)
     {
         this.toolType = toolType;
+        selectedPath.reset();
+        invalidate();
     }
 
-    public void setBitmapColor(int color)
+    public void setBitmapBackground(int color)
     {
         bitmap.eraseColor(color);
 
@@ -115,6 +117,25 @@ public class CanvasView extends View
             paintEraser.setColor(color);
 
         invalidate();
+    }
+
+	/**
+     * 캔버스의 선택된 영역을 지우는 메서드
+     * ※ 선택된 영역이 없으면 전체 영역을 지운다.
+     */
+    public void clearSelectedArea()
+    {
+        if (selectedPath.isEmpty())
+            setBitmapBackground(getBitmapBackground());
+        else
+        {
+            Paint paint = new Paint(paintEraser);
+            paint.setStyle(Paint.Style.FILL);
+
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawPath(selectedPath, paint);
+            invalidate();
+        }
     }
 
     @Override

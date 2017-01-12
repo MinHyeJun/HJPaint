@@ -100,7 +100,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color)
                 {
-                    canvasView.setBitmapColor(color);
+                    canvasView.setBitmapBackground(color);
                 }
             }).show();
         }
@@ -124,7 +124,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if (v.getId() == R.id.btn_clear)
         {
-            canvasView.setBitmapColor(canvasView.getBitmapBackground());
+            canvasView.clearSelectedArea();
         }
     }
 }
