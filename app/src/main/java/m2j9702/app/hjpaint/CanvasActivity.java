@@ -53,7 +53,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     {
         if(item.getItemId() == R.id.action_change_color)
         {
-            new AmbilWarnaDialog(this, canvasView.getColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+            new AmbilWarnaDialog(this, canvasView.getBrushColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
             {
                 @Override
                 public void onCancel(AmbilWarnaDialog dialog)
@@ -64,7 +64,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color)
                 {
-                    canvasView.setColor(color);
+                    canvasView.setBrushColor(color);
                 }
             }).show();
         }
