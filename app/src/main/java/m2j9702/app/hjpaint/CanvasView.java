@@ -8,6 +8,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+enum ToolNumber{
+    Eraser, Brush;
+}
+
 /**
  * 그림을 그릴 수 있는 뷰
  */
@@ -21,7 +25,7 @@ public class CanvasView extends View
      * 0 - 지우개 모드
      * 1 - 브러시 모드
      */
-    private int toolNumber;
+    private ToolNumber toolNumber;
 
     public CanvasView(Context context)
     {
@@ -54,7 +58,7 @@ public class CanvasView extends View
         return paintBrush.getColor();
     }
 
-    public void setToolNumber(int toolNumber)
+    public void setToolNumber(ToolNumber toolNumber)
     {
         this.toolNumber = toolNumber;
     }
@@ -80,9 +84,9 @@ public class CanvasView extends View
 
         if (lastX != -1 && lastY != -1)
         {
-            if(toolNumber == 0)
+            if(toolNumber == ToolNumber.Eraser)
                 canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintEraser);
-            else if(toolNumber == 1)
+            else if(toolNumber == ToolNumber.Brush)
                 canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintBrush);
         }
 

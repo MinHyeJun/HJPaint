@@ -50,11 +50,11 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if(v.getId() == R.id.btn_eraser)
         {
-            canvasView.setToolNumber(0);
+            canvasView.setToolNumber(ToolNumber.Eraser);
         }
         else if(v.getId() == R.id.btn_brush)
         {
-            canvasView.setToolNumber(1);
+            canvasView.setToolNumber(ToolNumber.Brush);
         }
 
 
