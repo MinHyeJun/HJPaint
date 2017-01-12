@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -11,6 +12,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
 {
 
     private CanvasView canvasView;
+    private RadioButton btnEraser;
+    private RadioButton btnBrush;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -18,9 +21,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas);
 
-        Button btnChangeColor =  (Button) findViewById(R.id.btn_change_color);
-        Button btnEraser = (Button) findViewById(R.id.btn_eraser);
-        Button btnBrush = (Button) findViewById(R.id.btn_brush);
+        Button btnChangeColor =   (Button) findViewById(R.id.btn_change_color);
+        btnEraser = (RadioButton) findViewById(R.id.btn_eraser);
+        btnBrush = (RadioButton) findViewById(R.id.btn_brush);
         canvasView = (CanvasView) findViewById(R.id.canvasview);
 
         btnChangeColor.setOnClickListener(this);
@@ -51,10 +54,12 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         else if(v.getId() == R.id.btn_eraser)
         {
             canvasView.setToolNumber(ToolNumber.Eraser);
+            btnBrush.setChecked(false);
         }
         else if(v.getId() == R.id.btn_brush)
         {
             canvasView.setToolNumber(ToolNumber.Brush);
+            btnEraser.setChecked(false);
         }
 
 
