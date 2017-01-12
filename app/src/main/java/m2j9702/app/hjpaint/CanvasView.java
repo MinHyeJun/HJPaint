@@ -50,6 +50,7 @@ public class CanvasView extends View
         paintEraser.setStrokeWidth(50.0f);
         paintEraser.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setColor(0xFFFFFFFF);
+        paintEraser.setStyle(Paint.Style.FILL_AND_STROKE);
         paintSelect.setStyle(Paint.Style.STROKE);
         paintSelect.setStrokeWidth(3.0f);
         paintSelect.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
