@@ -3,6 +3,7 @@ package m2j9702.app.hjpaint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -46,6 +47,8 @@ public class CanvasView extends View
         paintEraser.setStrokeWidth(50.0f);
         paintEraser.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setColor(0xFFFFFFFF);
+        paintSelect.setStrokeWidth(3.0f);
+        paintSelect.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
     }
 
     /**
