@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class LineWidthSettingDialog extends Dialog implements View.OnClickListener
+public class LineWidthSettingDialog extends Dialog implements View.OnClickListener, SeekBar.OnSeekBarChangeListener
 {
-    LineWidthSettingListener listener;
+    private LineWidthSettingListener listener;
     private SeekBar seekLineWidth;
+    private int initialLineWidth;
+    private TextView textLineWidth;
 
     public interface LineWidthSettingListener
     {
@@ -33,22 +35,22 @@ public class LineWidthSettingDialog extends Dialog implements View.OnClickListen
         setContentView(R.layout.dialog_line_width_setting);
 
         seekLineWidth = (SeekBar) findViewById(R.id.seek_line_width);
-        TextView textLineWidth = (TextView) findViewById(R.id.text_line_width);
+        textLineWidth = (TextView) findViewById(R.id.text_line_width);
         Button btnOk = (Button) findViewById(R.id.btn_ok);
         Button btnCancel = (Button) findViewById(R.id.btn_cancel);
 
         btnOk.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
-
+        seekLineWidth.setOnSeekBarChangeListener(this);
+        seekLineWidth.setProgress(initialLineWidth);
     }
 
     public LineWidthSettingDialog(Context context, int lineWidth, LineWidthSettingListener listener)
     {
         super(context);
-        seekLineWidth.setProgress(lineWidth-1);
+        initialLineWidth = lineWidth;
         this.listener = listener;
     }
-
 
     @Override
     public void onClick(View v)
@@ -69,5 +71,22 @@ public class LineWidthSettingDialog extends Dialog implements View.OnClickListen
             }
             dismiss();
         }
+    }
+
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+    {
+        textLineWidth.setText(progress+1+"");
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar)
+    {
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar)
+    {
     }
 }

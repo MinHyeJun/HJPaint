@@ -39,7 +39,9 @@ public class CanvasView extends View
         paintBrush = new Paint();
         paintEraser = new Paint();
         paintBrush.setStrokeWidth(10.0f);
+        paintBrush.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setStrokeWidth(50.0f);
+        paintEraser.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setColor(0xFFFFFFFF);
     }
 
@@ -80,6 +82,8 @@ public class CanvasView extends View
             return (int) paintEraser.getStrokeWidth();
         else if (toolNumber == ToolNumber.Brush)
             return (int) paintBrush.getStrokeWidth();
+        else
+            return -1;
     }
 
     public void setToolNumber(ToolNumber toolNumber)
