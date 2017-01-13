@@ -58,6 +58,7 @@ public class CanvasView extends View
         paintSelect.setStyle(Paint.Style.STROKE);
         paintSelect.setStrokeWidth(3.0f);
         paintSelect.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+
     }
 
     /**
@@ -166,6 +167,7 @@ public class CanvasView extends View
         if (bitmap == null)
         {
             bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            setBitmapBackground(0xffffffff);
         }
 
         canvas.drawBitmap(bitmap, 0, 0, null);
