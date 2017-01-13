@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="@android:color/darker_gray"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이미지 저장 파일 이름 입력"
+            android:textSize="20dp"/>
+
+        <EditText
+            android:id="@+id/edit_filename"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="File Name"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+
+            <Button
+                android:id="@+id/btn_cancel_filename"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="취소"
+                android:textSize="18dp"/>
+
+            <Button
+                android:id="@+id/btn_ok_filename"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="확인"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

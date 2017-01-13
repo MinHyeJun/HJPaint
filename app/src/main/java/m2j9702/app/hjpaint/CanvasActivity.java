@@ -107,6 +107,23 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }).show();
         }
+        else if(item.getItemId() == R.id.action_change_tool)
+        {
+
+        }
+        else if(item.getItemId() == R.id.action_save)
+        {
+            EditFileNameDialog dialog = new EditFileNameDialog(this, new EditFileNameDialog.EditFileNameListener()
+            {
+                @Override
+                public void onEditFileNameOk(String filePath)
+                {
+                    canvasView.saveImage("/sdcard/" + filePath +".jpeg");
+                    Log.d("ASDF", "/sdcard/" + filePath +".jpeg");
+                }
+            });
+            dialog.show();
+        }
         return true;
     }
 

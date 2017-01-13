@@ -10,6 +10,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 enum ToolType
 {
     ERASER, BRUSH, SELECT;
@@ -115,8 +119,26 @@ public class CanvasView extends View
 
         if(paintEraser.getColor() != color)
             paintEraser.setColor(color);
-
         invalidate();
+    }
+
+    public void saveImage(String filePath)
+    {
+        FileOutputStream fos = null;
+        try
+        {
+            fos = new FileOutputStream(filePath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+            fos.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 	/**
