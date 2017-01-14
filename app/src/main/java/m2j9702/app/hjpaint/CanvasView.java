@@ -123,7 +123,7 @@ public class CanvasView extends View
         invalidate();
     }
 
-    public void saveImage(String filePath)
+    public void saveBitmap(String filePath)
     {
         FileOutputStream fos = null;
         try

@@ -126,22 +126,20 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onPermissionGranted()
                 {
-                    Toast.makeText(CanvasActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onPermissionDenied(ArrayList<String> deniedPermissions)
                 {
-                    Toast.makeText(CanvasActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CanvasActivity.this, "권한 거부됨\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
 
                 }
             };
 
-
             new TedPermission(this)
                     .setPermissionListener(permissionListener)
-                    .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                    .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION)
+                    .setDeniedMessage("권한을 거부할 경우 서비스 이용에 제한이 있을 수 있습니다.\n\n[설정] > [권한]에서 설정하세요")
+                    .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .check();
 
             EditFileNameDialog dialog = new EditFileNameDialog(this, new EditFileNameDialog.EditFileNameListener()
@@ -149,7 +147,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onEditFileNameOk(String filePath)
                 {
-                    canvasView.saveImage("/sdcard/" + filePath +".jpeg");
+                    canvasView.saveBitmap("/sdcard/" + filePath +".jpeg");
                     Toast.makeText(CanvasActivity.this, "/내 디바이스/" + filePath + ".jpeg 로 저장되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             });
