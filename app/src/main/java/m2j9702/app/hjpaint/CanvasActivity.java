@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
-public class CanvasActivity extends AppCompatActivity implements View.OnClickListener
+public class CanvasActivity extends AppCompatActivity implements View.OnClickListener, PermissionListener
 {
 
     private CanvasView canvasView;
@@ -120,38 +120,11 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if(item.getItemId() == R.id.action_save)
         {
-
-            PermissionListener permissionListener = new PermissionListener()
-            {
-                @Override
-                public void onPermissionGranted()
-                {
-                }
-
-                @Override
-                public void onPermissionDenied(ArrayList<String> deniedPermissions)
-                {
-                    Toast.makeText(CanvasActivity.this, "권한 거부됨\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
-
-                }
-            };
-
             new TedPermission(this)
-                    .setPermissionListener(permissionListener)
+                    .setPermissionListener(this)
                     .setDeniedMessage("권한을 거부할 경우 서비스 이용에 제한이 있을 수 있습니다.\n\n[설정] > [권한]에서 설정하세요")
                     .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .check();
-
-            EditFileNameDialog dialog = new EditFileNameDialog(this, new EditFileNameDialog.EditFileNameListener()
-            {
-                @Override
-                public void onEditFileNameOk(String filePath)
-                {
-                    canvasView.saveBitmap("/sdcard/" + filePath +".jpeg");
-                    Toast.makeText(CanvasActivity.this, "/내 디바이스/" + filePath + ".jpeg 로 저장되었습니다.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            dialog.show();
         }
         return true;
     }
@@ -175,5 +148,27 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         {
             canvasView.clearSelectedArea();
         }
+    }
+
+    @Override
+    public void onPermissionGranted()
+    {
+        EditFileNameDialog dialog = new EditFileNameDialog(this, new EditFileNameDialog.EditFileNameListener()
+        {
+            @Override
+            public void onEditFileNameOk(String filePath)
+            {
+                canvasView.saveBitmap("/sdcard/" + filePath +".jpeg");
+                Toast.makeText(CanvasActivity.this, "/내 디바이스/" + filePath + ".jpeg 로 저장되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void onPermissionDenied(ArrayList<String> deniedPermissions)
+    {
+        Toast.makeText(CanvasActivity.this, "권한이 거부되어 저장할 수 없습니다.\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+
     }
 }
