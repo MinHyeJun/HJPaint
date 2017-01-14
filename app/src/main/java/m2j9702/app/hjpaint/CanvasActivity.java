@@ -102,10 +102,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
             new AmbilWarnaDialog(this, canvasView.getBitmapBackground(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
             {
                 @Override
-                public void onCancel(AmbilWarnaDialog dialog)
-                {
-
-                }
+                public void onCancel(AmbilWarnaDialog dialog) { }
 
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color)
@@ -113,10 +110,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                     canvasView.setBitmapBackground(color);
                 }
             }).show();
-        }
-        else if(item.getItemId() == R.id.action_change_tool)
-        {
-
         }
         else if(item.getItemId() == R.id.action_save)
         {
@@ -158,8 +151,15 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onEditFileNameOk(String filePath)
             {
-                canvasView.saveBitmap("/sdcard/" + filePath +".jpeg");
-                Toast.makeText(CanvasActivity.this, "/내 디바이스/" + filePath + ".jpeg 로 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                if(filePath.length()==0)
+                {
+                    Toast.makeText(CanvasActivity.this, "파일명을 입력하세요.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    canvasView.saveImage("/sdcard/" + filePath + ".jpeg");
+                    Toast.makeText(CanvasActivity.this, "/내 디바이스/" + filePath + ".jpeg 로 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         dialog.show();
