@@ -2,6 +2,7 @@ package m2j9702.app.hjpaint;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
@@ -140,6 +141,11 @@ public class CanvasView extends View
         {
             e.printStackTrace();
         }
+    }
+
+    public void importImage(String filePath, BitmapFactory.Options options)
+    {
+       this.bitmap = BitmapFactory.decodeFile(filePath,options).copy(Bitmap.Config.ARGB_8888, true);
     }
 
 	/**

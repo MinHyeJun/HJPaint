@@ -1,9 +1,15 @@
 package m2j9702.app.hjpaint;
 
 import android.Manifest;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +22,7 @@ import android.widget.Toast;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -28,6 +35,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     private RadioButton btnBrush;
     private Button btnClear;
     private RadioButton btnSelect;
+    private static final int SELECT_PICTURE = 1;
+    private String selectedImagePath;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -102,7 +111,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
             new AmbilWarnaDialog(this, canvasView.getBitmapBackground(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
             {
                 @Override
-                public void onCancel(AmbilWarnaDialog dialog) { }
+                public void onCancel(AmbilWarnaDialog dialog)
+                {
+                }
 
                 @Override
                 public void onOk(AmbilWarnaDialog dialog, int color)
@@ -111,7 +122,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }).show();
         }
-        else if(item.getItemId() == R.id.action_save)
+        else if (item.getItemId() == R.id.action_save)
         {
             new TedPermission(this)
                     .setPermissionListener(this)
@@ -119,7 +130,66 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                     .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .check();
         }
+        else if (item.getItemId() == R.id.action_import)
+        {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+        }
         return true;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == SELECT_PICTURE)
+            {
+                Uri selectedImageUri = data.getData();
+                selectedImagePath = getPath(selectedImageUri);
+                try
+                {
+                    int imageHeight = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()).getHeight();
+                    int imageWidth = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()).getWidth();
+                    DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+                    int deviceWidth = dm.widthPixels;
+                    int deviceHeight = dm.heightPixels;
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = (imageHeight / deviceHeight) * (imageWidth / deviceWidth);
+                    canvasView.importImage(selectedImagePath,options);
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * 사진의 URI 경로를 받는 메소드
+     */
+    public String getPath(Uri uri)
+    {
+        // uri가 null일경우 null반환
+        if (uri == null)
+        {
+            return null;
+        }
+        // 미디어스토어에서 유저가 선택한 사진의 URI를 받아온다.
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if (cursor != null)
+        {
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        // URI경로를 반환한다.
+        return uri.getPath();
     }
 
     @Override
@@ -151,7 +221,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onEditFileNameOk(String filePath)
             {
-                if(filePath.length()==0)
+                if (filePath.length() == 0)
                 {
                     Toast.makeText(CanvasActivity.this, "파일명을 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
