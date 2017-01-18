@@ -132,10 +132,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if (item.getItemId() == R.id.action_import)
         {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+            startActivityForResult(intent, SELECT_PICTURE);
         }
         return true;
     }
