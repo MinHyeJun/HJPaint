@@ -15,16 +15,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-enum ToolType
-{
-    ERASER, BRUSH, SELECT;
-}
-
 /**
  * 그림을 그릴 수 있는 뷰
  */
 public class CanvasView extends View
 {
+
+    enum ToolType { ERASER, BRUSH, SELECT; }
+
     private Paint paintBrush;
     private Paint paintEraser;
     private Paint paintSelect;
