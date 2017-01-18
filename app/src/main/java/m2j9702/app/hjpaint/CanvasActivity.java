@@ -155,9 +155,25 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                     DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
                     int deviceWidth = dm.widthPixels;
                     int deviceHeight = dm.heightPixels;
+                    double size;
 
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = (imageHeight / deviceHeight) * (imageWidth / deviceWidth);
+
+                    if ((imageHeight / deviceHeight) > (imageWidth / deviceWidth))
+                        size = imageHeight / deviceHeight;
+                    else
+                        size = (double) imageWidth / deviceWidth;
+
+                    Log.d("ASDF", "" + size);
+                    Log.d("ASDF", "" + options.inSampleSize);
+
+                    while(true)
+                    {
+                        if(options.inSampleSize >= size)
+                            break;
+
+                        options.inSampleSize++;
+                    }
                     canvasView.importImage(selectedImagePath,options);
                 }
                 catch (IOException e)
