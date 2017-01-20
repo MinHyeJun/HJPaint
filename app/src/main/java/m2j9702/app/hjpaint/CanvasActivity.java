@@ -33,10 +33,14 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     private CanvasView canvasView;
     private RadioButton btnEraser;
     private RadioButton btnBrush;
-    private Button btnClear;
     private RadioButton btnSelect;
+    private Button btnClear;
     private static final int SELECT_PICTURE = 1;
     private String selectedImagePath;
+    private Button btnChangeWidth;
+    private Button btnChangeBrushColor;
+    private Button btnChangeBackground;
+    private Button btnCanNotChange;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -48,6 +52,10 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         btnBrush = (RadioButton) findViewById(R.id.btn_brush);
         btnSelect = (RadioButton) findViewById(R.id.btn_select);
         btnClear = (Button) findViewById(R.id.btn_clear);
+        btnChangeWidth = (Button) findViewById(R.id.btn_change_width);
+        btnChangeBrushColor = (Button) findViewById(R.id.btn_change_brush_color);
+        btnChangeBackground = (Button) findViewById(R.id.btn_change_background);
+        btnCanNotChange = (Button) findViewById(R.id.btn_can_not_change);
         canvasView = (CanvasView) findViewById(R.id.canvasview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,6 +64,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         btnBrush.setOnClickListener(this);
         btnSelect.setOnClickListener(this);
         btnClear.setOnClickListener(this);
+        btnChangeBackground.setOnClickListener(this);
+        btnChangeBrushColor.setOnClickListener(this);
+        btnChangeWidth.setOnClickListener(this);
     }
 
     @Override
@@ -70,59 +81,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        if (item.getItemId() == R.id.action_change_color)
-        {
-            new AmbilWarnaDialog(this, canvasView.getBrushColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
-            {
-                @Override
-                public void onCancel(AmbilWarnaDialog dialog)
-                {
-
-                }
-
-                @Override
-                public void onOk(AmbilWarnaDialog dialog, int color)
-                {
-                    canvasView.setBrushColor(color);
-                }
-            }).show();
-        }
-        else if (item.getItemId() == R.id.action_line_width)
-        {
-            LineWidthSettingDialog dialog = new LineWidthSettingDialog(this, canvasView.getLineWidth(), new LineWidthSettingDialog.LineWidthSettingListener()
-            {
-                @Override
-                public void onLineDialogOk(int lineWidth)
-                {
-                    canvasView.setLineWidth(lineWidth);
-                    Log.d("ASDF", "OK");
-                }
-
-                @Override
-                public void onLineDialogCancel()
-                {
-                    Log.d("ASDF", "Cancel");
-                }
-            });
-            dialog.show();
-        }
-        else if (item.getItemId() == R.id.action_change_background)
-        {
-            new AmbilWarnaDialog(this, canvasView.getBitmapBackground(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
-            {
-                @Override
-                public void onCancel(AmbilWarnaDialog dialog)
-                {
-                }
-
-                @Override
-                public void onOk(AmbilWarnaDialog dialog, int color)
-                {
-                    canvasView.setBitmapBackground(color);
-                }
-            }).show();
-        }
-        else if (item.getItemId() == R.id.action_save)
+       if (item.getItemId() == R.id.action_save)
         {
             new TedPermission(this)
                     .setPermissionListener(this)
@@ -166,14 +125,14 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                     Log.d("ASDF", "" + size);
                     Log.d("ASDF", "" + options.inSampleSize);
 
-                    while(true)
+                    while (true)
                     {
-                        if(options.inSampleSize >= size)
+                        if (options.inSampleSize >= size)
                             break;
 
                         options.inSampleSize++;
                     }
-                    canvasView.importImage(selectedImagePath,options);
+                    canvasView.importImage(selectedImagePath, options);
                 }
                 catch (IOException e)
                 {
@@ -213,18 +172,91 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.btn_eraser)
         {
             canvasView.setToolType(CanvasView.ToolType.ERASER);
+            btnChangeWidth.setText(""+(canvasView.getLineWidth()+1));
+
+            if(btnChangeWidth.getVisibility() == View.GONE)
+            {
+                btnChangeWidth.setVisibility(View.VISIBLE);
+                btnCanNotChange.setVisibility(View.GONE);
+            }
         }
         else if (v.getId() == R.id.btn_brush)
         {
-            canvasView.setToolType(CanvasView.ToolType.BRUSH);
+                canvasView.setToolType(CanvasView.ToolType.BRUSH);
+            btnChangeWidth.setText(""+(canvasView.getLineWidth()+1));
+            if(btnChangeWidth.getVisibility() == View.GONE)
+            {
+                btnChangeWidth.setVisibility(View.VISIBLE);
+                btnCanNotChange.setVisibility(View.GONE);
+            }
         }
         else if (v.getId() == R.id.btn_select)
         {
             canvasView.setToolType(CanvasView.ToolType.SELECT);
+                btnChangeWidth.setVisibility(View.GONE);
+                btnCanNotChange.setVisibility(View.VISIBLE);
+
         }
         else if (v.getId() == R.id.btn_clear)
         {
             canvasView.clearSelectedArea();
+        }
+        else if(v.getId() == R.id.btn_change_width)
+        {
+
+            LineWidthSettingDialog dialog = new LineWidthSettingDialog(this, canvasView.getLineWidth(), new LineWidthSettingDialog.LineWidthSettingListener()
+            {
+                @Override
+                public void onLineDialogOk(int lineWidth)
+                {
+                    canvasView.setLineWidth(lineWidth);
+                    btnChangeWidth.setText(""+lineWidth);
+                    Log.d("ASDF", "OK");
+                }
+
+                @Override
+                public void onLineDialogCancel()
+                {
+                    Log.d("ASDF", "Cancel");
+                }
+            });
+            dialog.show();
+
+        }
+        else if (v.getId() == R.id.btn_change_brush_color)
+        {
+
+            new AmbilWarnaDialog(this, canvasView.getBrushColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+            {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog)
+                {
+
+                }
+
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color)
+                {
+                    canvasView.setBrushColor(color);
+                }
+            }).show();
+        }
+        else if (v.getId() == R.id.btn_change_background)
+        {
+
+            new AmbilWarnaDialog(this, canvasView.getBitmapBackground(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+            {
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog)
+                {
+                }
+
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color)
+                {
+                    canvasView.setBitmapBackground(color);
+                }
+            }).show();
         }
     }
 

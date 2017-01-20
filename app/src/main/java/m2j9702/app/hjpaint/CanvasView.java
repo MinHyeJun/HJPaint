@@ -87,9 +87,9 @@ public class CanvasView extends View
     public void setLineWidth(int lineWidth)
     {
         if(toolType == ToolType.ERASER)
-            paintEraser.setStrokeWidth(lineWidth);
+            paintEraser.setStrokeWidth(lineWidth-1);
         else if (toolType == ToolType.BRUSH)
-            paintBrush.setStrokeWidth(lineWidth);
+            paintBrush.setStrokeWidth(lineWidth-1);
     }
 
     /**
@@ -106,6 +106,10 @@ public class CanvasView extends View
             return -1;
     }
 
+    public ToolType getToolType()
+    {
+        return toolType;
+    }
     public void setToolType(ToolType toolType)
     {
         this.toolType = toolType;
