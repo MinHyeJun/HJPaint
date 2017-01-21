@@ -73,8 +73,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_canvas, menu);
-
-        if (getIntent().getStringExtra("Image").length() > 0)
+        if (getIntent().getStringExtra("Image") != null)
         {
             selectedImagePath = getIntent().getStringExtra("Image");
             int imageHeight = getIntent().getIntExtra("ImageHeight", 0);
