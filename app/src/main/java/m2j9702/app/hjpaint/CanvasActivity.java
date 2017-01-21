@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -130,17 +129,22 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
 
     public void ImportImage(int imageHeight, int imageWidth)
     {
-        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-        int deviceWidth = dm.widthPixels;
-        int deviceHeight = dm.heightPixels;
+        int canvasViewWidth = canvasView.getWidth();
+        int canvasViewHeight = canvasView.getHeight();
         double size;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
 
-        if ((imageHeight / deviceHeight) > (imageWidth / deviceWidth))
-            size = imageHeight / deviceHeight;
+        if (((double)imageHeight / canvasViewHeight) > ((double)imageWidth / canvasViewWidth))
+            size = (double) imageHeight / canvasViewHeight;
         else
-            size = (double) imageWidth / deviceWidth;
+            size = (double) imageWidth / canvasViewWidth;
+
+        Log.d("ASDF","Canvas View Width: " + canvasViewWidth);
+        Log.d("ASDF","Canvas View Height: " + canvasViewHeight);
+        Log.d("ASDF", "Device Width: " + getApplicationContext().getResources().getDisplayMetrics().widthPixels);
+        Log.d("ASDF", "Device Height: " + getApplicationContext().getResources().getDisplayMetrics().heightPixels);
+
 
         while (true)
         {
