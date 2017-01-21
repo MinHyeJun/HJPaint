@@ -145,7 +145,7 @@ public class CanvasView extends View
         }
     }
 
-    public void importImage(String filePath, BitmapFactory.Options options)
+    public void importBitmap(String filePath, BitmapFactory.Options options)
     {
        this.bitmap = BitmapFactory.decodeFile(filePath,options).copy(Bitmap.Config.ARGB_8888, true);
     }

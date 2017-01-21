@@ -58,8 +58,8 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         btnCanNotChange = (Button) findViewById(R.id.btn_can_not_change);
         canvasView = (CanvasView) findViewById(R.id.canvasview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        setSupportActionBar(toolbar);
         btnEraser.setOnClickListener(this);
         btnBrush.setOnClickListener(this);
         btnSelect.setOnClickListener(this);
@@ -75,13 +75,21 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_canvas, menu);
 
+        if (getIntent().getStringExtra("Image").length() > 0)
+        {
+            selectedImagePath = getIntent().getStringExtra("Image");
+            int imageHeight = getIntent().getIntExtra("ImageHeight", 0);
+            int imageWidth = getIntent().getIntExtra("ImageWidth", 0);
+            ImportImage(imageHeight, imageWidth);
+            Toast.makeText(this, "이미지를 성공적으로 불러왔습니다.", Toast.LENGTH_LONG).show();
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-       if (item.getItemId() == R.id.action_save)
+        if (item.getItemId() == R.id.action_save)
         {
             new TedPermission(this)
                     .setPermissionListener(this)
@@ -110,29 +118,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 {
                     int imageHeight = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()).getHeight();
                     int imageWidth = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData()).getWidth();
-                    DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-                    int deviceWidth = dm.widthPixels;
-                    int deviceHeight = dm.heightPixels;
-                    double size;
-
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-
-                    if ((imageHeight / deviceHeight) > (imageWidth / deviceWidth))
-                        size = imageHeight / deviceHeight;
-                    else
-                        size = (double) imageWidth / deviceWidth;
-
-                    Log.d("ASDF", "" + size);
-                    Log.d("ASDF", "" + options.inSampleSize);
-
-                    while (true)
-                    {
-                        if (options.inSampleSize >= size)
-                            break;
-
-                        options.inSampleSize++;
-                    }
-                    canvasView.importImage(selectedImagePath, options);
+                    ImportImage(imageHeight, imageWidth);
                 }
                 catch (IOException e)
                 {
@@ -140,6 +126,30 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }
+    }
+
+    public void ImportImage(int imageHeight, int imageWidth)
+    {
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        int deviceWidth = dm.widthPixels;
+        int deviceHeight = dm.heightPixels;
+        double size;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        if ((imageHeight / deviceHeight) > (imageWidth / deviceWidth))
+            size = imageHeight / deviceHeight;
+        else
+            size = (double) imageWidth / deviceWidth;
+
+        while (true)
+        {
+            if (options.inSampleSize >= size)
+                break;
+
+            options.inSampleSize++;
+        }
+        canvasView.importBitmap(selectedImagePath, options);
     }
 
     /**
@@ -172,9 +182,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.btn_eraser)
         {
             canvasView.setToolType(CanvasView.ToolType.ERASER);
-            btnChangeWidth.setText(""+(canvasView.getLineWidth()+1));
+            btnChangeWidth.setText("" + (canvasView.getLineWidth() + 1));
 
-            if(btnChangeWidth.getVisibility() == View.GONE)
+            if (btnChangeWidth.getVisibility() == View.GONE)
             {
                 btnChangeWidth.setVisibility(View.VISIBLE);
                 btnCanNotChange.setVisibility(View.GONE);
@@ -182,9 +192,9 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if (v.getId() == R.id.btn_brush)
         {
-                canvasView.setToolType(CanvasView.ToolType.BRUSH);
-            btnChangeWidth.setText(""+(canvasView.getLineWidth()+1));
-            if(btnChangeWidth.getVisibility() == View.GONE)
+            canvasView.setToolType(CanvasView.ToolType.BRUSH);
+            btnChangeWidth.setText("" + (canvasView.getLineWidth() + 1));
+            if (btnChangeWidth.getVisibility() == View.GONE)
             {
                 btnChangeWidth.setVisibility(View.VISIBLE);
                 btnCanNotChange.setVisibility(View.GONE);
@@ -193,15 +203,15 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         else if (v.getId() == R.id.btn_select)
         {
             canvasView.setToolType(CanvasView.ToolType.SELECT);
-                btnChangeWidth.setVisibility(View.GONE);
-                btnCanNotChange.setVisibility(View.VISIBLE);
+            btnChangeWidth.setVisibility(View.GONE);
+            btnCanNotChange.setVisibility(View.VISIBLE);
 
         }
         else if (v.getId() == R.id.btn_clear)
         {
             canvasView.clearSelectedArea();
         }
-        else if(v.getId() == R.id.btn_change_width)
+        else if (v.getId() == R.id.btn_change_width)
         {
 
             LineWidthSettingDialog dialog = new LineWidthSettingDialog(this, canvasView.getLineWidth(), new LineWidthSettingDialog.LineWidthSettingListener()
@@ -210,7 +220,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
                 public void onLineDialogOk(int lineWidth)
                 {
                     canvasView.setLineWidth(lineWidth);
-                    btnChangeWidth.setText(""+lineWidth);
+                    btnChangeWidth.setText("" + lineWidth);
                     Log.d("ASDF", "OK");
                 }
 
