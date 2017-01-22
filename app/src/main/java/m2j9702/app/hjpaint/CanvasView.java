@@ -25,7 +25,8 @@ public class CanvasView extends View
 
     private Paint paintBrush;
     private Paint paintEraser;
-    private Paint paintSelect;
+    private Paint paintSelectLine;
+    private Paint paintSelectFill;
     private Bitmap bitmap;
     private Path selectedPath;
 
@@ -46,7 +47,8 @@ public class CanvasView extends View
 
         paintBrush = new Paint();
         paintEraser = new Paint();
-        paintSelect = new Paint();
+        paintSelectLine = new Paint();
+        paintSelectFill = new Paint();
         selectedPath = new Path();
         paintBrush.setStrokeWidth(10.0f);
         paintBrush.setStrokeCap(Paint.Cap.ROUND);
@@ -54,10 +56,11 @@ public class CanvasView extends View
         paintEraser.setStrokeCap(Paint.Cap.ROUND);
         paintEraser.setColor(0xFFFFFFFF);
         paintEraser.setStyle(Paint.Style.FILL_AND_STROKE);
-        paintSelect.setStyle(Paint.Style.STROKE);
-        paintSelect.setStrokeWidth(3.0f);
-        paintSelect.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
-
+        paintSelectLine.setStyle(Paint.Style.STROKE);
+        paintSelectLine.setStrokeWidth(3.0f);
+        paintSelectLine.setPathEffect(new DashPathEffect(new float[]{10, 20}, 0));
+        paintSelectFill.setStyle(Paint.Style.FILL);
+        paintSelectFill.setColor(0xFFFFFFFF);
     }
 
     /**
@@ -73,6 +76,17 @@ public class CanvasView extends View
     public int getBrushColor()
     {
         return paintBrush.getColor();
+    }
+
+    public void setSelectFillColor(int color)
+    {
+        paintSelectFill.setColor(color);
+        fillSelectedArea();
+    }
+
+    public int getSelectFillColor()
+    {
+        return paintSelectFill.getColor();
     }
 
     public int getBitmapBackground()
@@ -169,6 +183,13 @@ public class CanvasView extends View
         }
     }
 
+    public void fillSelectedArea()
+    {
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawPath(selectedPath,paintSelectFill);
+        invalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas)
     {
@@ -180,7 +201,7 @@ public class CanvasView extends View
 
         canvas.drawBitmap(bitmap, 0, 0, null);
         if(toolType == ToolType.SELECT)
-            canvas.drawPath(selectedPath,paintSelect);
+            canvas.drawPath(selectedPath, paintSelectLine);
     }
 
     private float lastX = -1, lastY = -1;

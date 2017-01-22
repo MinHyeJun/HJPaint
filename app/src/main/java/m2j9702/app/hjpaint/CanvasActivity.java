@@ -238,21 +238,42 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         }
         else if (v.getId() == R.id.btn_change_brush_color)
         {
-
-            new AmbilWarnaDialog(this, canvasView.getBrushColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+            if (canvasView.getToolType() == CanvasView.ToolType.BRUSH)
             {
-                @Override
-                public void onCancel(AmbilWarnaDialog dialog)
+                new AmbilWarnaDialog(this, canvasView.getBrushColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
                 {
+                    @Override
+                    public void onCancel(AmbilWarnaDialog dialog)
+                    {
 
-                }
+                    }
 
-                @Override
-                public void onOk(AmbilWarnaDialog dialog, int color)
+                    @Override
+                    public void onOk(AmbilWarnaDialog dialog, int color)
+                    {
+                        canvasView.setBrushColor(color);
+                    }
+                }).show();
+            }
+            else if (canvasView.getToolType() == CanvasView.ToolType.SELECT)
+            {
+                new AmbilWarnaDialog(this, canvasView.getSelectFillColor(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
                 {
-                    canvasView.setBrushColor(color);
-                }
-            }).show();
+                    @Override
+                    public void onCancel(AmbilWarnaDialog dialog)
+                    {
+
+                    }
+
+                    @Override
+                    public void onOk(AmbilWarnaDialog dialog, int color)
+                    {
+                        canvasView.setSelectFillColor(color);
+                    }
+                }).show();
+
+                //색깔이 선택되기 전에 적용됨
+            }
         }
         else if (v.getId() == R.id.btn_change_background)
         {
