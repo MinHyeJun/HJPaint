@@ -139,12 +139,6 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         else
             size = (double) imageWidth / canvasViewWidth;
 
-        Log.d("ASDF","Canvas View Width: " + canvasViewWidth);
-        Log.d("ASDF","Canvas View Height: " + canvasViewHeight);
-        Log.d("ASDF", "Device Width: " + getApplicationContext().getResources().getDisplayMetrics().widthPixels);
-        Log.d("ASDF", "Device Height: " + getApplicationContext().getResources().getDisplayMetrics().heightPixels);
-
-
         while (true)
         {
             if (options.inSampleSize >= size)
