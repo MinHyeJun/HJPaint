@@ -278,7 +278,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
         else if (v.getId() == R.id.btn_change_background)
         {
 
-            new AmbilWarnaDialog(this, canvasView.getBitmapBackground(), true, new AmbilWarnaDialog.OnAmbilWarnaListener()
+            new AmbilWarnaDialog(this, canvasView.getBitmapBackground(), false, new AmbilWarnaDialog.OnAmbilWarnaListener()
             {
                 @Override
                 public void onCancel(AmbilWarnaDialog dialog)
