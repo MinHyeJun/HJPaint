@@ -25,7 +25,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="New Canvas"
-            android:background="@drawable/btn_splash"
+            android:background="@drawable/title_btn_splash"
             android:textColor="#000"
             android:textSize="23dp"/>
 
@@ -40,7 +40,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="Import Image"
-            android:background="@drawable/btn_splash"
+            android:background="@drawable/title_btn_splash"
             android:textColor="#000"
             android:textSize="23dp"/>
 
