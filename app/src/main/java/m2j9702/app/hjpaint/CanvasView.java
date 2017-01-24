@@ -65,7 +65,6 @@ public class CanvasView extends View
 
     /**
      * 붓의 색을 바꿔주는 메소드
-     *
      * @param color 색깔
      */
     public void setBrushColor(int color)
@@ -73,25 +72,54 @@ public class CanvasView extends View
         paintBrush.setColor(color);
     }
 
+    /**
+     * 붓의 현재 색을 리턴하는 메소드
+     * @return 붓의 현재 색
+     */
     public int getBrushColor()
     {
         return paintBrush.getColor();
     }
 
+    /**
+     * 선택 영역 채우기 색을 설정하는 메소드
+     * @param color 색깔
+     */
     public void setSelectFillColor(int color)
     {
         paintSelectFill.setColor(color);
         fillSelectedArea();
     }
 
+    /**
+     * 현재 선택 영역 채우기 색을 리턴하는 메소드
+     * @return  현재 선택 영역 채우기 색
+     */
     public int getSelectFillColor()
     {
         return paintSelectFill.getColor();
     }
 
+    /**
+     * 배경색을 리턴하는 메소드
+     * @return 배경색(==지우개 색)
+     */
     public int getBitmapBackground()
     {
         return paintEraser.getColor();
+    }
+
+    /**
+     * 배경색을 설정하는 메소드
+     * @param color 배경색
+     */
+    public void setBitmapBackground(int color)
+    {
+        bitmap.eraseColor(color);
+
+        if(paintEraser.getColor() != color)
+            paintEraser.setColor(color);
+        invalidate();
     }
 
     /**
@@ -120,10 +148,17 @@ public class CanvasView extends View
             return -1;
     }
 
+    /**현재 선택한 도구를 리턴하는 메소드
+     * @return 현재 선택한 도구 타입
+     */
     public ToolType getToolType()
     {
         return toolType;
     }
+
+    /**도구를 입력 받은 도구로 변경하는 메소드
+     * @param toolType 변경한 도구
+     */
     public void setToolType(ToolType toolType)
     {
         this.toolType = toolType;
@@ -131,15 +166,9 @@ public class CanvasView extends View
         invalidate();
     }
 
-    public void setBitmapBackground(int color)
-    {
-        bitmap.eraseColor(color);
-
-        if(paintEraser.getColor() != color)
-            paintEraser.setColor(color);
-        invalidate();
-    }
-
+    /**현재 비트맵을 JPEG형태 파일로 저장하는 메소드
+     * @param filePath 저장할 파일 경로+이름
+     */
     public void saveImage(String filePath)
     {
         FileOutputStream fos = null;
@@ -159,6 +188,11 @@ public class CanvasView extends View
         }
     }
 
+    /**
+     * 해당 경로의 파일을 옵션에 주어진 비율만큼 줄여 비트맵에 불러오는 메소드
+     * @param filePath 파일 경로
+     * @param options 불러오기 옵션(비트맵 비율이 저장되어 있어야 함)
+     */
     public void importBitmap(String filePath, BitmapFactory.Options options)
     {
        this.bitmap = BitmapFactory.decodeFile(filePath,options).copy(Bitmap.Config.ARGB_8888, true);
@@ -183,6 +217,9 @@ public class CanvasView extends View
         }
     }
 
+    /**
+     * 선택된 영역을 채우는 메소드
+     */
     public void fillSelectedArea()
     {
         Canvas canvas = new Canvas(bitmap);

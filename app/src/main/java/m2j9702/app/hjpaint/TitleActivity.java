@@ -46,7 +46,7 @@ public class TitleActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
+    //선택 받은 파일 경로와 이미지 크기를 CanvasActivity로 전달
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (resultCode == RESULT_OK)
