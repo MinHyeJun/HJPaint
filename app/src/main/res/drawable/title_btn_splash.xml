@@ -5,7 +5,7 @@
         android:drawable="@drawable/btn_pressed"
         android:state_pressed="false"/>
     <item
-        android:drawable="@drawable/btn_normal"
+        android:drawable="@drawable/btn_normal2"
         android:state_pressed="true"/>
 
 </selector>
