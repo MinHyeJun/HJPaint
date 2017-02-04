@@ -21,7 +21,10 @@ import java.io.IOException;
 public class CanvasView extends View
 {
 
-    enum ToolType { ERASER, BRUSH, SELECT; }
+    enum ToolType
+    {
+        ERASER, BRUSH, SELECT;
+    }
 
     private Paint paintBrush;
     private Paint paintEraser;
@@ -65,6 +68,7 @@ public class CanvasView extends View
 
     /**
      * 붓의 색을 바꿔주는 메소드
+     *
      * @param color 색깔
      */
     public void setBrushColor(int color)
@@ -74,6 +78,7 @@ public class CanvasView extends View
 
     /**
      * 붓의 현재 색을 리턴하는 메소드
+     *
      * @return 붓의 현재 색
      */
     public int getBrushColor()
@@ -83,6 +88,7 @@ public class CanvasView extends View
 
     /**
      * 선택 영역 채우기 색을 설정하는 메소드
+     *
      * @param color 색깔
      */
     public void setSelectFillColor(int color)
@@ -93,7 +99,8 @@ public class CanvasView extends View
 
     /**
      * 현재 선택 영역 채우기 색을 리턴하는 메소드
-     * @return  현재 선택 영역 채우기 색
+     *
+     * @return 현재 선택 영역 채우기 색
      */
     public int getSelectFillColor()
     {
@@ -102,6 +109,7 @@ public class CanvasView extends View
 
     /**
      * 배경색을 리턴하는 메소드
+     *
      * @return 배경색(==지우개 색)
      */
     public int getBitmapBackground()
@@ -111,36 +119,39 @@ public class CanvasView extends View
 
     /**
      * 배경색을 설정하는 메소드
+     *
      * @param color 배경색
      */
     public void setBitmapBackground(int color)
     {
         bitmap.eraseColor(color);
 
-        if(paintEraser.getColor() != color)
+        if (paintEraser.getColor() != color)
             paintEraser.setColor(color);
         invalidate();
     }
 
     /**
      * 현재 선택된 툴의 선 두께를 설정
+     *
      * @param lineWidth 설정할 선 두께
      */
     public void setLineWidth(int lineWidth)
     {
-        if(toolType == ToolType.ERASER)
-            paintEraser.setStrokeWidth(lineWidth-1);
+        if (toolType == ToolType.ERASER)
+            paintEraser.setStrokeWidth(lineWidth - 1);
         else if (toolType == ToolType.BRUSH)
-            paintBrush.setStrokeWidth(lineWidth-1);
+            paintBrush.setStrokeWidth(lineWidth - 1);
     }
 
     /**
      * 현재 선택된 툴의 선 두깨를 가져오는 메소드
+     *
      * @return 현재 선택된 툴의 선 두께
      */
     public int getLineWidth()
     {
-        if(toolType == ToolType.ERASER)
+        if (toolType == ToolType.ERASER)
             return (int) paintEraser.getStrokeWidth();
         else if (toolType == ToolType.BRUSH)
             return (int) paintBrush.getStrokeWidth();
@@ -148,7 +159,9 @@ public class CanvasView extends View
             return -1;
     }
 
-    /**현재 선택한 도구를 리턴하는 메소드
+    /**
+     * 현재 선택한 도구를 리턴하는 메소드
+     *
      * @return 현재 선택한 도구 타입
      */
     public ToolType getToolType()
@@ -156,7 +169,9 @@ public class CanvasView extends View
         return toolType;
     }
 
-    /**도구를 입력 받은 도구로 변경하는 메소드
+    /**
+     * 도구를 입력 받은 도구로 변경하는 메소드
+     *
      * @param toolType 변경한 도구
      */
     public void setToolType(ToolType toolType)
@@ -166,7 +181,9 @@ public class CanvasView extends View
         invalidate();
     }
 
-    /**현재 비트맵을 JPEG형태 파일로 저장하는 메소드
+    /**
+     * 현재 비트맵을 JPEG형태 파일로 저장하는 메소드
+     *
      * @param filePath 저장할 파일 경로+이름
      */
     public void saveImage(String filePath)
@@ -190,15 +207,17 @@ public class CanvasView extends View
 
     /**
      * 해당 경로의 파일을 옵션에 주어진 비율만큼 줄여 비트맵에 불러오는 메소드
+     *
      * @param filePath 파일 경로
-     * @param options 불러오기 옵션(비트맵 비율이 저장되어 있어야 함)
+     * @param options  불러오기 옵션(비트맵 비율이 저장되어 있어야 함)
      */
-    public void importBitmap(String filePath, BitmapFactory.Options options)
+    public void importBitmap(String filePath, BitmapFactory.Options options, int canvasWidth, int canvasHeight)
     {
-       this.bitmap = BitmapFactory.decodeFile(filePath,options).copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath, options).copy(Bitmap.Config.ARGB_8888, true);
+        this.bitmap = Bitmap.createScaledBitmap(bitmap, canvasWidth, canvasHeight, true);
     }
 
-	/**
+    /**
      * 캔버스의 선택된 영역을 지우는 메서드
      * ※ 선택된 영역이 없으면 전체 영역을 지운다.
      */
@@ -223,7 +242,7 @@ public class CanvasView extends View
     public void fillSelectedArea()
     {
         Canvas canvas = new Canvas(bitmap);
-        canvas.drawPath(selectedPath,paintSelectFill);
+        canvas.drawPath(selectedPath, paintSelectFill);
         invalidate();
     }
 
@@ -237,7 +256,7 @@ public class CanvasView extends View
         }
 
         canvas.drawBitmap(bitmap, 0, 0, null);
-        if(toolType == ToolType.SELECT)
+        if (toolType == ToolType.SELECT)
             canvas.drawPath(selectedPath, paintSelectLine);
     }
 
@@ -252,9 +271,9 @@ public class CanvasView extends View
         {
             if (lastX != -1 && lastY != -1)
             {
-                if(toolType == ToolType.ERASER)
+                if (toolType == ToolType.ERASER)
                     canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintEraser);
-                else if(toolType == ToolType.BRUSH)
+                else if (toolType == ToolType.BRUSH)
                     canvas.drawLine(lastX, lastY, event.getX(), event.getY(), paintBrush);
             }
 
@@ -280,7 +299,7 @@ public class CanvasView extends View
                 selectedPath.moveTo(lastX, lastY);
             }
             else
-                selectedPath.lineTo(event.getX(),event.getY());
+                selectedPath.lineTo(event.getX(), event.getY());
 
             // 사용자가 선택영역을 다 그렸을 때 끝점과 시작점을 이어준다.
             if (event.getAction() == MotionEvent.ACTION_UP)

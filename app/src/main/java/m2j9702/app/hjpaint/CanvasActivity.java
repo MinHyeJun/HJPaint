@@ -191,7 +191,7 @@ public class CanvasActivity extends AppCompatActivity implements View.OnClickLis
 
             options.inSampleSize++;
         }
-        canvasView.importBitmap(selectedImagePath, options);
+        canvasView.importBitmap(selectedImagePath, options, canvasViewWidth, canvasViewHeight);
     }
 
     /**
