@@ -52,8 +52,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:button="@null"
-                android:foreground="@drawable/select_splash"
+                android:button="@drawable/select_splash"
                 android:layout_margin="5dp"/>
 
         </RadioGroup>
